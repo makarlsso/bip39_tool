@@ -1,6 +1,6 @@
 [package]
 name = "bip39_tool"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2024"
 
 [lib]
@@ -8,7 +8,7 @@ name = "bip39_tool"
 path = "src/lib.rs"
 
 [[bin]]
-name = "bip39"
+name = "bip39-tool"
 path = "src/main.rs"
 
 [dependencies]
