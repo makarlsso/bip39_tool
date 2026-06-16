@@ -1,12 +1,12 @@
 use anyhow::{Context, Result};
-use bip39_tool::{format_seed_base64, format_seed_hex, generate_mnemonic};
+use bip39_tool::{DEFAULT_WORD_COUNT, format_seed_base64, format_seed_hex, generate_mnemonic};
 use clap::Parser;
 use dialoguer::{Input, Password};
 
 #[derive(Parser)]
 #[command(name = "bip39", about = "Generate a BIP39 mnemonic and seed")]
 struct Cli {
-    /// Number of words in the mnemonic (12, 18, or 24)
+    /// Number of words in the mnemonic (12, 18, or 24). When prompted, default is 24.
     #[arg(long, short)]
     words: Option<u8>,
 
@@ -36,6 +36,7 @@ fn resolve_word_count(cli_words: Option<u8>) -> Result<u8> {
         Some(words) => words,
         None => Input::new()
             .with_prompt("How many words? (12, 18, or 24)")
+            .default(DEFAULT_WORD_COUNT)
             .interact_text()
             .context("failed to read word count")?,
     };

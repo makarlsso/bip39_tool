@@ -3,6 +3,8 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use bip39::{Language, Mnemonic};
 use getrandom::fill;
 
+pub const DEFAULT_WORD_COUNT: u8 = 24;
+
 pub fn entropy_byte_count(word_count: usize) -> usize {
     (word_count / 3) * 4
 }
@@ -34,6 +36,11 @@ mod tests {
     use super::*;
     use base64::Engine;
     use bip39::Mnemonic;
+
+    #[test]
+    fn default_word_count_is_valid() {
+        assert_eq!(validate_word_count(DEFAULT_WORD_COUNT).unwrap(), 24);
+    }
 
     #[test]
     fn validate_word_count_accepts_standard_lengths() {

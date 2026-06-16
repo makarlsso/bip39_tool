@@ -2,7 +2,7 @@
 
 ![Rust Edition](https://img.shields.io/badge/edition-2024-orange?style=flat-square&logo=rust)
 ![MSRV](https://img.shields.io/badge/MSRV-1.85%2B-orange?style=flat-square&logo=rust)
-![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.0.1-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![BIP39](https://img.shields.io/badge/BIP39-compliant-lightgrey?style=flat-square)
 
@@ -62,12 +62,12 @@ bip39 --words 12 --password ""
 
 | Flag | Short | Required | Description |
 |------|-------|----------|-------------|
-| `--words` | `-w` | No | Word count: `12`, `18`, or `24`. Prompted if omitted. |
+| `--words` | `-w` | No | Word count: `12`, `18`, or `24`. Prompted if omitted; default is `24`. |
 | `--password` | `-p` | No | BIP39 extension passphrase. Prompted if omitted. Use `""` for none. |
 
 **Prompt rules**
 
-- Omit `--words` → the tool asks for `12`, `18`, or `24`.
+- Omit `--words` → the tool asks for `12`, `18`, or `24`. Press Enter to use **24**.
 - Omit `--password` → the tool asks for a passphrase (hidden input; press Enter for none).
 - Provide both flags → no prompts.
 
