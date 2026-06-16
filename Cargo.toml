@@ -1,0 +1,52 @@
+[package]
+name = "bip39_tool"
+version = "1.0.0"
+edition = "2024"
+
+[lib]
+name = "bip39_tool"
+path = "src/lib.rs"
+
+[[bin]]
+name = "bip39"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+base64 = "0.22"
+bip39 = "2"
+clap = { version = "4", features = ["derive"] }
+dialoguer = "0.12"
+getrandom = "0.3"
+hex = "0.4"
+
+# Optimization profiles for speed and release builds
+[profile.dev]
+opt-level = 0
+debug = true
+split-debuginfo = "unpacked"
+overflow-checks = true
+
+[profile.release]
+opt-level = 3
+debug = "line-tables-only"
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+overflow-checks = false
+
+[profile.dev-fast]
+inherits = "dev"
+opt-level = 1
+debug = true
+split-debuginfo = "unpacked"
+
+[profile.release-with-debug]
+inherits = "release"
+debug = true
+strip = "none"
+
+[profile.release-min-size]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
