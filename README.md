@@ -1,8 +1,8 @@
-# bip39
+# bip39-tool
 
 ![Rust Edition](https://img.shields.io/badge/edition-2024-orange?style=flat-square&logo=rust)
 ![MSRV](https://img.shields.io/badge/MSRV-1.85%2B-orange?style=flat-square&logo=rust)
-![Version](https://img.shields.io/badge/version-1.0.1-blue?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.0.3-blue?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![BIP39](https://img.shields.io/badge/BIP39-compliant-lightgrey?style=flat-square)
 
@@ -24,52 +24,67 @@ Build the release binary:
 cargo build --release
 ```
 
-The executable is `target/release/bip39`.
+The executable is `target/release/bip39-tool`.
 
 ## Run
 
-### Interactive mode
+### Quick generate (default)
 
-Run without flags. The tool asks for word count and passphrase:
+Run with no flags. Uses **24 words** and **no passphrase**. No prompts.
 
 ```bash
-bip39
+bip39-tool
 ```
 
-### Partial flags
+### Interactive generate
 
-Pass word count on the command line. The tool still prompts for the passphrase:
+Use `--generate` to prompt for any option you omit:
 
 ```bash
-bip39 --words 24
+bip39-tool --generate
 ```
 
-### Non-interactive mode
+Prompts for word count (Enter accepts **24**) and passphrase (Enter accepts none).
 
-Pass both flags to skip all prompts:
+Provide one flag to prompt only for the other:
 
 ```bash
-bip39 --words 12 --password "my extension passphrase"
+bip39-tool --generate --words 12
+bip39-tool --generate --password "my extension passphrase"
 ```
 
-Use an empty password for no extension passphrase:
+Provide both flags to skip all prompts:
 
 ```bash
-bip39 --words 12 --password ""
+bip39-tool --generate --words 12 --password ""
+```
+
+### Direct flags (no prompts)
+
+Pass `--words` and/or `--password` without `--generate`. Omitted options use defaults (**24** words, no passphrase). No prompts.
+
+```bash
+bip39-tool --words 12
+bip39-tool --password "my extension passphrase"
+bip39-tool --words 18 --password ""
 ```
 
 ## Flags
 
-| Flag | Short | Required | Description |
-|------|-------|----------|-------------|
-| `--words` | `-w` | No | Word count: `12`, `18`, or `24`. Prompted if omitted; default is `24`. |
-| `--password` | `-p` | No | BIP39 extension passphrase. Prompted if omitted. Use `""` for none. |
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--generate` | | Prompt for `--words` and/or `--password` when omitted |
+| `--words` | `-w` | Word count: `12`, `18`, or `24`. Default is `24`. |
+| `--password` | `-p` | BIP39 extension passphrase. Default is none. |
 
-**Prompt rules**
+**Behavior**
 
-- Omit `--words` → the tool asks for `12`, `18`, or `24`. Press Enter to use **24**.
-- Omit `--password` → the tool asks for a passphrase (hidden input; press Enter for none).
-- Provide both flags → no prompts.
+| Invocation | Words | Passphrase | Prompts |
+|------------|-------|------------|---------|
+| `bip39-tool` | 24 | none | No |
+| `bip39-tool --words 12` | 12 | none | No |
+| `bip39-tool --generate` | prompted | prompted | Yes |
+| `bip39-tool --generate --words 12` | 12 | prompted | Passphrase only |
 
 ## Output
 
@@ -92,7 +107,7 @@ The seed is always 64 bytes. Hex and base64 are two encodings of the same value.
 
 - **Treat output as secret.** Anyone with the mnemonic or seed can control derived wallets.
 - **Use a trusted machine.** Do not run on shared or remote systems you do not control.
-- **Passphrase input is hidden** when prompted interactively.
+- **Passphrase input is hidden** when prompted with `--generate`.
 - **The passphrase is not the mnemonic.** It is an optional BIP39 extension passphrase (sometimes called the "25th word") used only during seed derivation.
 
 ## Develop
